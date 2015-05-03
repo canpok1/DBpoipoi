@@ -1,0 +1,75 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'findbugs'
+apply plugin: 'application'
+apply plugin: 'checkstyle'
+
+repositories {
+    mavenCentral()
+}
+
+// アプリケーション設定
+def appName = 'DBpoipoi'
+startScripts {
+    applicationName = appName
+}
+mainClassName = "main.DBpoipoi"
+distZip.baseName = appName
+jar.baseName = appName
+
+// 文字コード設定
+def defaultEncoding = 'UTF-8'
+[compileJava, compileTestJava, javadoc]*.options*.encoding = defaultEncoding
+
+dependencies {
+    compile group: 'org.apache.poi', name: 'poi', version: '3.10-FINAL'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.10-FINAL'
+    testCompile 'org.jmockit:jmockit:1.12'
+    testCompile 'org.jmockit:jmockit-coverage:1.12'
+    testCompile 'junit:junit:4.10'
+}
+
+// Gradleラッパーのインストールタスク
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+test {
+    // テストが二重実行される問題の対策
+    exclude '**/*$*'
+    // カバレッジ設定
+    jvmArgs "-Djmockit-coverage-outputDir=" + reporting.baseDir + "/coverage",  // レポートの出力先
+            "-Djmockit-coverage-output=html-nocp,serial",   // 出力タイプ
+            "-Djmockit-coverage-srcDirs=" + sourceSets.main.java.srcDirs.join(',') // ソースの場所
+}
+
+// Findbugsの設定
+[findbugsMain, findbugsTest]*.effort = "max"
+[findbugsMain, findbugsTest]*.reportLevel = "high"
+[findbugsMain, findbugsTest]*.ignoreFailures = true
+[findbugsMain, findbugsTest]*.reports {
+    xml.enabled = true
+    html.enabled = false
+}
+
+// Checkstyle警告が出ても続行
+[checkstyleMain, checkstyleTest]*.ignoreFailures = true
+
+// 生成するEclipseプロジェクトにフォーマッターの設定追加
+eclipse.jdt.file {
+    withProperties { properties ->
+        def formatter = new XmlSlurper().parse('config/EclipseFormatter.xml')
+        formatter.profile.setting.each {
+            properties.put(it.@id as String, it.@value as String)
+        }
+    }
+}
+
+// 生成するEclipseプロジェクトの文字コードを設定
+eclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.write('eclipse.preferences.version=1\n')
+    f.append('encoding/<project>=' + defaultEncoding)
+}
+
+defaultTasks 'clean', 'javadoc', 'build', 'distZip'

@@ -3,6 +3,8 @@ package jp.gr.java_conf.ktnet.dbpoipoi.excel;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,7 +22,14 @@ import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
  */
 public class ExcelWriter {
 
+    /**
+     * ワークブック.
+     */
     private Workbook workbook;
+    
+    /**
+     * 書き込み先ファイルパス.
+     */
     private String filePath;
     
     /**
@@ -53,21 +62,29 @@ public class ExcelWriter {
         int rowIndex = 0;
         
         if(!memo.equals("")) {
-            addRecord(sheet, rowIndex++, new String[]{memo});
+            List<Object> memoList = new ArrayList<Object>();
+            memoList.add(memo);
+            addRecord(sheet, rowIndex++, memoList);
         }
         
-        for(String[] record : records.getRecords()) {
+        for(List<Object> record : records.getRecords()) {
             addRecord(sheet, rowIndex++, record);
         }
     }
     
-    private void addRecord(Sheet sheet, int rowIndex, String[] record) {
+    /**
+     * レコード情報を追加します.
+     * @param sheet 書き込み先シート.
+     * @param rowIndex 書き込み先行数.
+     * @param record レコード.
+     */
+    private void addRecord(Sheet sheet, int rowIndex, List<Object> record) {
         Row row = sheet.createRow(rowIndex);
         
         int column = 0;
-        for(String value : record) {
+        for(Object value : record) {
             Cell cell = row.createCell(column);
-            cell.setCellValue(value);
+            cell.setCellValue(value.toString());
             column++;
         }
     }

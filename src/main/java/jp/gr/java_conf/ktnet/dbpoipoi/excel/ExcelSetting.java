@@ -38,6 +38,9 @@ public final class ExcelSetting {
         
         ExcelSetting setting = new ExcelSetting();
         
+        // TODO テスト用
+        setting.filePath = "./sample.xls";
+        
         return setting;
     }
 }

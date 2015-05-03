@@ -6,6 +6,11 @@ package jp.gr.java_conf.ktnet.dbpoipoi.util;
  *
  */
 public final class ArgumentCheckUtil {
+    
+    /**
+     * コンストラクタ(使用不可).
+     */
+    private ArgumentCheckUtil() { }
 
     /**
      * nullではないことをチェックします.

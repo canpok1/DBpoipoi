@@ -48,7 +48,7 @@ public class ExcelWriterTest {
         }
         
         @After
-        public void cleanup() {
+        public void tearDown() {
             if(file.exists()) {
                 file.delete();
             }

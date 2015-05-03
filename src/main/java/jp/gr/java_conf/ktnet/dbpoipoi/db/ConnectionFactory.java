@@ -1,6 +1,8 @@
 package jp.gr.java_conf.ktnet.dbpoipoi.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * DBへの接続を生成するクラスです.
@@ -32,10 +34,13 @@ public final class ConnectionFactory {
      * @param user ユーザー名
      * @param password パスワード
      * @return DBへの接続
+     * @throws ClassNotFoundException 
+     * @throws SQLException 
      */
-    public static Connection create(Type type, String url, String user, String password) {
-        // TODO 実装
-        throw new UnsupportedOperationException("未実装");
+    public static Connection create(Type type, String url, String user, String password)
+            throws ClassNotFoundException, SQLException {
+        Class.forName("org.sqlite.JDBC");
+        return DriverManager.getConnection(url, user, password);
     }
 
 }

@@ -1,5 +1,9 @@
 package jp.gr.java_conf.ktnet.dbpoipoi.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.gr.java_conf.ktnet.dbpoipoi.db.ConnectionFactory.Type;
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 
 /**
@@ -53,9 +57,9 @@ public final class DatabaseSetting {
     private String password;
     
     /**
-     * SQL設定.
+     * レコード取得用のSQL情報.
      */
-    public SqlSetting[] sqlSettings;
+    private List<SqlSetting> sqlSettings;
     
     /**
      * DB種別を取得します.
@@ -93,7 +97,7 @@ public final class DatabaseSetting {
      * SQL設定を取得します.
      * @return SQL設定.
      */
-    public SqlSetting[] getSqlSettings() {
+    public List<SqlSetting> getSqlSettings() {
         return sqlSettings;
     }
 
@@ -106,6 +110,18 @@ public final class DatabaseSetting {
         ArgumentCheckUtil.checkNotNullAndEmpty(filePath);
         
         DatabaseSetting setting = new DatabaseSetting();
+        
+        // TODO テスト用
+        setting.type = Type.SQLITE;
+        setting.url = "jdbc:sqlite:./sample.db";
+        setting.user = "";
+        setting.password = "";
+        
+        setting.sqlSettings = new ArrayList<SqlSetting>();
+        
+        setting.sqlSettings.add(new SqlSetting());
+        setting.sqlSettings.get(0).name = "sample1";
+        setting.sqlSettings.get(0).name = "select * from tbl1";
         
         return setting;
     }

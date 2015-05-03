@@ -7,11 +7,11 @@ package jp.gr.java_conf.ktnet.dbpoipoi.db;
  */
 public enum ColumnType {
     /**
-     * 数値
+     * 数値.
      */
     NUMERIC,
     /**
-     * 文字
+     * 文字.
      */
     STRING,
 }

@@ -10,6 +10,23 @@ import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 public final class DatabaseSetting {
 
     /**
+     * レコード取得用のSQL情報を保持するクラスです.
+     * @author tanabe
+     *
+     */
+    public static class SqlSetting {
+        /**
+         * 識別用の名前.
+         */
+        public String name;
+        
+        /**
+         * SQL.
+         */
+        public String sql;
+    }
+    
+    /**
      * コンストラクタ.
      */
     private DatabaseSetting() {
@@ -35,7 +52,10 @@ public final class DatabaseSetting {
      */
     private String password;
     
-    
+    /**
+     * SQL設定.
+     */
+    public SqlSetting[] sqlSettings;
     
     /**
      * DB種別を取得します.
@@ -69,6 +89,13 @@ public final class DatabaseSetting {
         return password;
     }
 
+    /**
+     * SQL設定を取得します.
+     * @return SQL設定.
+     */
+    public SqlSetting[] getSqlSettings() {
+        return sqlSettings;
+    }
 
     /**
      * 設定ファイルから情報を読み込みます.

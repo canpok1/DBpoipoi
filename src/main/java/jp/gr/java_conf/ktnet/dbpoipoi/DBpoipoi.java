@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.db.ConnectionFactory;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting;
+import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting.SqlSetting;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.RecordContainer;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.SqlExecuter;
 import jp.gr.java_conf.ktnet.dbpoipoi.excel.ExcelSetting;
@@ -27,40 +28,55 @@ public final class DBpoipoi {
             DatabaseSetting dbSetting = DatabaseSetting.load(null);
             ExcelSetting excelSetting = ExcelSetting.load(null);
             
-            // DBから情報取得
-            RecordContainer records = null;
+            ExcelWriter writer = new ExcelWriter(excelSetting.getFilePath());
             try (Connection connection
                     = ConnectionFactory.create(dbSetting.getType(),
                                                dbSetting.getUrl(),
                                                dbSetting.getUser(),
                                                dbSetting.getPassword())) {
-                SqlExecuter executer = new SqlExecuter(connection);
-                records = executer.select(null);
-            } finally {
-                if(records != null) {
-                    System.out.println("[○]DBからの情報取得");
-                } else {
-                    System.out.println("[×]DBからの情報取得");
+                
+                SqlExecuter sqlExecuter = new SqlExecuter(connection);
+                
+                for(SqlSetting sqlSetting : dbSetting.getSqlSettings()) {
+                    
+                    fetchRecordAndSave(sqlSetting, sqlExecuter, writer);
+                    
                 }
+                
             }
-            
-            // Excelへ書き込み
-            boolean writeSuccess = false;
-            try {
-                ExcelWriter writer = new ExcelWriter();
-                writer.write(records, excelSetting.getFilePath());
-            } finally {
-                if(writeSuccess) {
-                    System.out.println("[○]Excelへの書き込み");
-                } else {
-                    System.out.println("[×]Excelへの書き込み");
-                }
-            }
+            writer.write();
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * レコードを取得して書き込みます.
+     * @param sqlSetting レコード取得用のSQL情報.
+     * @param sqlExecuter SQL実行オブジェクト.
+     * @param writer Excelへの書き込みオブジェクト.
+     */
+    private static void fetchRecordAndSave( SqlSetting sqlSetting,
+                                            SqlExecuter sqlExecuter,
+                                            ExcelWriter writer) {
+        boolean gettingIsSuccess = false;
+        boolean saveIsSuccess = false;
+        try {
+            RecordContainer records = sqlExecuter.select(sqlSetting.sql);
+            gettingIsSuccess = true;
+            writer.addRecords(sqlSetting.name, sqlSetting.sql, records);
+            saveIsSuccess = true;
+        } finally {
+            if(!gettingIsSuccess) {
+                System.out.println("[×]" + sqlSetting.name + "…レコード取得に失敗");
+            } else if(!saveIsSuccess) {
+                System.out.println("[×]" + sqlSetting.name + "…Excelへの書き込みに失敗");
+            } else {
+                System.out.println("[○]" + sqlSetting.name + "…成功");
+            }
+        }
+    }
+    
     /**
      * コンストラクタ(使用不可).
      */

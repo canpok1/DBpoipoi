@@ -30,7 +30,7 @@ public final class ExcelSetting {
 
     /**
      * 設定ファイルから情報を取得します.
-     * @param filePath 設定ファイルパス.
+     * @param filePath 設定ファイルパス(Null不可).
      * @return 取得した情報.
      */
     public static ExcelSetting load(String filePath) {

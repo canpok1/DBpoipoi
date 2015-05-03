@@ -15,32 +15,76 @@ public class RecordContainerTest {
         
         @Test(expected = IllegalArgumentException.class)
         public void カラム名がnullだと例外発生() {
+            ColumnType[] types = {
+                    ColumnType.STRING,
+                    ColumnType.STRING,
+                    ColumnType.STRING
+            };
             String[][] records = {
                 { "aaa", "bbb", "ccc"}
             };
-            new RecordContainer(null, records);
+            new RecordContainer(null, types, records);
+        }
+        
+        @Test(expected = IllegalArgumentException.class)
+        public void カラム型がnullだと例外発生() {
+            String[] columnNames = { "aaa", "bbb", "ccc"};
+            String[][] records = {
+                    { "aaa", "bbb", "ccc"}
+                };
+            new RecordContainer(columnNames, null, records);
         }
         
         @Test(expected = IllegalArgumentException.class)
         public void レコードがnullだと例外発生() {
+            ColumnType[] types = {
+                    ColumnType.STRING,
+                    ColumnType.STRING,
+                    ColumnType.STRING
+            };
             String[] columnNames = { "aaa", "bbb", "ccc"};
-            new RecordContainer(columnNames, null);
+            new RecordContainer(columnNames, types, null);
         }
         
         @Test
         public void レコードが0件だと例外未発生() {
             String[] columnNames = { "aaa", "bbb", "ccc"};
+            ColumnType[] types = {
+                    ColumnType.STRING,
+                    ColumnType.STRING,
+                    ColumnType.STRING
+            };
             String[][] records = {};
-            new RecordContainer(columnNames, records);
+            new RecordContainer(columnNames, types, records);
         }
         
         @Test(expected = IllegalArgumentException.class)
+        public void カラム名とカラム型のサイズが異なると例外未発生() {
+            String[] columnNames = { "Name1", "Name2", "Name3"};
+            ColumnType[] types = {
+                    ColumnType.STRING,
+                    ColumnType.STRING,
+                    ColumnType.STRING,
+                    ColumnType.STRING
+            };
+            String[][] records = {
+                    { "aaa", "bbb", "ccc"}
+                };
+            new RecordContainer(columnNames, types, records);
+        }
+
+        @Test(expected = IllegalArgumentException.class)
         public void カラム名とレコードのサイズが異なると例外未発生() {
             String[] columnNames = { "Name1", "Name2", "Name3"};
+            ColumnType[] types = {
+                    ColumnType.STRING,
+                    ColumnType.STRING,
+                    ColumnType.STRING
+            };
             String[][] records = {
                     {"value1-1", "value1-2", "value1-3"},
                     {"value2-1", "value2-2", "value2-3", "value2-4"}};
-            new RecordContainer(columnNames, records);
+            new RecordContainer(columnNames, types, records);
         }
     }
     

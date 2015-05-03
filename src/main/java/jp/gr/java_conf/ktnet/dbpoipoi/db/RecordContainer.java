@@ -13,19 +13,29 @@ public class RecordContainer {
 
     private String[] columnNames;
     
+    private ColumnType[] columnTypes;
+    
     private String[][] records;
 
     /**
      * カラム名を取得します.
-     * @return columnNames カラム名.
+     * @return columnNames
      */
     public String[] getColumnNames() {
         return columnNames;
     }
 
     /**
+     * カラムの型名を取得します.
+     * @return columnTypes
+     */
+    public ColumnType[] getColumnType() {
+        return columnTypes;
+    }
+
+    /**
      * レコードを取得します.
-     * @return records レコード.
+     * @return records
      */
     public String[][] getRecords() {
         return records;
@@ -34,7 +44,7 @@ public class RecordContainer {
     /**
      * レコードを取得します.
      * @param index レコードのインデックス.
-     * @return records レコード.
+     * @return records
      */
     public String[] getRecords(int index) {
         return records[index];
@@ -43,11 +53,20 @@ public class RecordContainer {
     /**
      * コンストラクタ.
      * @param columnNames カラム名.
+     * @param columnTypes カラム型.
      * @param records レコード.
      */
-    public RecordContainer(String[] columnNames, String[][] records) {
+    public RecordContainer(String[] columnNames, ColumnType[] columnTypes, String[][] records) {
         ArgumentCheckUtil.checkNotNull(columnNames);
+        ArgumentCheckUtil.checkNotNull(columnTypes);
         ArgumentCheckUtil.checkNotNull(records);
+        
+        if(columnNames.length != columnTypes.length) {
+            throw new IllegalArgumentException(
+                    "カラム型のサイズ違反"
+                    + "[列名数=" + columnNames.length + "]"
+                    + "[型数=" + columnTypes.length + "]");
+        }
         
         int recordIndex = 1;
         for(String[] record : records) {
@@ -63,6 +82,7 @@ public class RecordContainer {
         }
         
         this.columnNames = columnNames;
+        this.columnTypes = columnTypes;
         this.records = records;
     }
 }

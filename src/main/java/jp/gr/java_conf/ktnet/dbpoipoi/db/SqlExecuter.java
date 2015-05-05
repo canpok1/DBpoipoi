@@ -38,7 +38,7 @@ public class SqlExecuter {
      * @throws SQLException 実行に失敗した場合
      */
     public RecordContainer select(String sql) throws SQLException {
-        // TODO 実装
+
         ArgumentCheckUtil.checkNotNull(sql);
         if(!sql.toUpperCase().matches("SELECT .*")) {
             throw new IllegalArgumentException("SELECT文以外は指定不可");

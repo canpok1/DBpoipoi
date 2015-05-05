@@ -8,7 +8,6 @@ import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting.SqlSetting;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.RecordContainer;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.SqlExecuter;
-import jp.gr.java_conf.ktnet.dbpoipoi.excel.ExcelSetting;
 import jp.gr.java_conf.ktnet.dbpoipoi.excel.ExcelWriter;
 
 /**
@@ -26,10 +25,9 @@ public final class DBpoipoi {
         try {
             // 設定読み込み
             ArgumentAnalyzer analyzer = new ArgumentAnalyzer(args);
-            DatabaseSetting dbSetting = DatabaseSetting.load("abc");
-            ExcelSetting excelSetting = ExcelSetting.load("abc");
+            DatabaseSetting dbSetting = DatabaseSetting.load("abc", analyzer.getSqlFolder());
             
-            ExcelWriter writer = new ExcelWriter(excelSetting.getFilePath());
+            ExcelWriter writer = new ExcelWriter(analyzer.getOutputFile());
             try (Connection connection
                     = ConnectionFactory.create(dbSetting.getType(),
                                                dbSetting.getUrl(),
@@ -66,17 +64,17 @@ public final class DBpoipoi {
         boolean gettingIsSuccess = false;
         boolean saveIsSuccess = false;
         try {
-            RecordContainer records = sqlExecuter.select(sqlSetting.sql);
+            RecordContainer records = sqlExecuter.select(sqlSetting.getSql());
             gettingIsSuccess = true;
-            writer.addRecords(sqlSetting.name, sqlSetting.sql, records);
+            writer.addRecords(sqlSetting.getName(), sqlSetting.getSql(), records);
             saveIsSuccess = true;
         } finally {
             if(!gettingIsSuccess) {
-                System.out.println("[×]" + sqlSetting.name + "…レコード取得に失敗");
+                System.out.println("[×]" + sqlSetting.getName() + "…レコード取得に失敗");
             } else if(!saveIsSuccess) {
-                System.out.println("[×]" + sqlSetting.name + "…Excelへの書き込みに失敗");
+                System.out.println("[×]" + sqlSetting.getName() + "…Excelへの書き込みに失敗");
             } else {
-                System.out.println("[○]" + sqlSetting.name + "…成功");
+                System.out.println("[○]" + sqlSetting.getName() + "…成功");
             }
         }
     }

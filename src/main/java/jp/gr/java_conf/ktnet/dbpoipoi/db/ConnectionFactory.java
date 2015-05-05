@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+
 /**
  * DBへの接続を生成するクラスです.
  * @author tanabe
@@ -39,8 +41,23 @@ public final class ConnectionFactory {
      */
     public static Connection create(Type type, String url, String user, String password)
             throws ClassNotFoundException, SQLException {
-        Class.forName("org.sqlite.JDBC");
+        ArgumentCheckUtil.checkNotNullAndEmpty(url);
+        Class.forName(getClassName(type));
         return DriverManager.getConnection(url, user, password);
+    }
+    
+    /**
+     * JDBCのクラス名を取得します.
+     * @param type DB種別
+     * @return クラス名.
+     */
+    private static String getClassName(Type type) {
+        switch(type) {
+        case SQLITE :
+            return "org.sqlite.JDBC";
+        default :
+            throw new UnsupportedOperationException("未対応のDBタイプ");
+        }
     }
 
 }

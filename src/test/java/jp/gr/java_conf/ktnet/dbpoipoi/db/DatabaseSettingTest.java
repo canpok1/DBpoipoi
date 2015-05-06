@@ -36,9 +36,6 @@ public class DatabaseSettingTest {
         }
     }
     
-//    public static class 設定ファイルに設定項目が不足している場合 {
-//    }
-    
     public static class 設定値がすべて書いてあってSQLが2つある場合 {
         
         DatabaseSetting sut;
@@ -52,7 +49,7 @@ public class DatabaseSettingTest {
         
         @Test
         public void loadでDB設定値が読み込めること() {
-            assertThat(sut.getType(), is(ConnectionFactory.Type.SQLITE));
+            assertThat(sut.getJdbcDriverClass(), is("org.sqlite.JDBC"));
             assertThat(sut.getUrl(), is("jdbc:sqlite:./sample.db"));
             assertThat(sut.getUser(), is("abc"));
             assertThat(sut.getPassword(), is("def"));

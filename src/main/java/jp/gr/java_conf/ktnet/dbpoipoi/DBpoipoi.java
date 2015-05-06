@@ -25,11 +25,14 @@ public final class DBpoipoi {
         try {
             // 設定読み込み
             ArgumentAnalyzer analyzer = new ArgumentAnalyzer(args);
-            DatabaseSetting dbSetting = DatabaseSetting.load("abc", analyzer.getSqlFolder());
+            DatabaseSetting dbSetting = DatabaseSetting.load(
+                analyzer.getDbSetting(),
+                analyzer.getSqlFolder()
+            );
             
             ExcelWriter writer = new ExcelWriter(analyzer.getOutputFile());
             try (Connection connection
-                    = ConnectionFactory.create(dbSetting.getType(),
+                    = ConnectionFactory.create(dbSetting.getJdbcDriverClass(),
                                                dbSetting.getUrl(),
                                                dbSetting.getUser(),
                                                dbSetting.getPassword())) {
@@ -44,6 +47,7 @@ public final class DBpoipoi {
                 
             }
             writer.write();
+            System.out.println("保存完了[" + analyzer.getOutputFile() + "]");
         } catch(Exception e) {
             e.printStackTrace();
         }

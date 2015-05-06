@@ -40,37 +40,43 @@ public class SqlExecuter {
     public RecordContainer select(String sql) throws SQLException {
 
         ArgumentCheckUtil.checkNotNull(sql);
+        
         if(!sql.toUpperCase().matches("SELECT .*")) {
-            throw new IllegalArgumentException("SELECT文以外は指定不可");
+            throw new IllegalArgumentException("SELECT文以外は指定不可[" + sql + "]");
         }
         
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery(sql);
-        
-        // カラム名
-        ArrayList<String> columnNames = new ArrayList<String>();
-        int columnCount = rs.getMetaData().getColumnCount();
-        for(int col = 1; col <= columnCount; col++) {
-            columnNames.add(rs.getMetaData().getColumnName(col));
-        }
-        
-        // カラム型
-        ArrayList<Integer> columnTypes = new ArrayList<Integer>();
-        for(int col = 1; col <= columnCount; col++) {
-            columnTypes.add(rs.getMetaData().getColumnType(col));
-        }
-        
-        // レコード
-        ArrayList<List<Object>> records = new ArrayList<List<Object>>();
-        while(rs.next()) {
-            List<Object> record = new ArrayList<Object>();
+        try {
+                
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            
+            // カラム名
+            ArrayList<String> columnNames = new ArrayList<String>();
+            int columnCount = rs.getMetaData().getColumnCount();
             for(int col = 1; col <= columnCount; col++) {
-                record.add(getValue(rs, col, columnTypes.get(col - 1)));
+                columnNames.add(rs.getMetaData().getColumnName(col));
             }
-            records.add(record);
+            
+            // カラム型
+            ArrayList<Integer> columnTypes = new ArrayList<Integer>();
+            for(int col = 1; col <= columnCount; col++) {
+                columnTypes.add(rs.getMetaData().getColumnType(col));
+            }
+            
+            // レコード
+            ArrayList<List<Object>> records = new ArrayList<List<Object>>();
+            while(rs.next()) {
+                List<Object> record = new ArrayList<Object>();
+                for(int col = 1; col <= columnCount; col++) {
+                    record.add(getValue(rs, col, columnTypes.get(col - 1)));
+                }
+                records.add(record);
+            }
+            
+            return new RecordContainer(columnNames, columnTypes, records);
+        } catch(SQLException e) {
+            throw new SQLException("SQL実行エラー[" + sql + "]", e);
         }
-        
-        return new RecordContainer(columnNames, columnTypes, records);
     }
     
     /**

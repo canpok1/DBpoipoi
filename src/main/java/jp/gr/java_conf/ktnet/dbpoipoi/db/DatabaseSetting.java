@@ -3,14 +3,12 @@ package jp.gr.java_conf.ktnet.dbpoipoi.db;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import jp.gr.java_conf.ktnet.dbpoipoi.db.ConnectionFactory.Type;
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 
 /**
@@ -71,9 +69,9 @@ public final class DatabaseSetting {
     }
     
     /**
-     * DBの種類.
+     * JDBCのドライバクラス名.
      */
-    private ConnectionFactory.Type type;
+    private String jdbcDriverClass;
     
     /**
      * 接続URL.
@@ -96,11 +94,11 @@ public final class DatabaseSetting {
     private List<SqlSetting> sqlSettings;
     
     /**
-     * DB種別を取得します.
-     * @return type DB種別
+     * JDBCのドライバクラス名を取得します.
+     * @return jdbcDriverClass
      */
-    public ConnectionFactory.Type getType() {
-        return type;
+    public String getJdbcDriverClass() {
+        return jdbcDriverClass;
     }
 
     /**
@@ -153,29 +151,13 @@ public final class DatabaseSetting {
         try (FileInputStream is = new FileInputStream(filePath)) {
             prop.load(is);
         }
-        setting.type = loadDbType(prop);
+        setting.jdbcDriverClass = prop.getProperty("driverClass");
         setting.url = prop.getProperty("url");
         setting.user = prop.getProperty("user");
         setting.password = prop.getProperty("password");
         setting.sqlSettings = loadSqlDir(new File(sqlDir));
         
         return setting;
-    }
-    
-    /**
-     * DB種別を取得します.
-     * @param prop プロパティ.
-     * @return DB種別.
-     */
-    private static Type loadDbType(Properties prop) {
-        assert (prop != null);
-        String typeStr = prop.getProperty("db");
-        
-        if(typeStr.equals("sqlite")) {
-            return Type.SQLITE;
-        }
-        
-        throw new UnsupportedOperationException("未対応のDB設定です.[" + typeStr + "]");
     }
     
     /**

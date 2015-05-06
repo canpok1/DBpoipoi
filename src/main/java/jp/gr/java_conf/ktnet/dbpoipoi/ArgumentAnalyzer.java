@@ -20,7 +20,7 @@ public class ArgumentAnalyzer {
     /**
      * SQLフォルダのデフォルト値.
      */
-    private static final String SQL_DIR_DEFAULT = "./sql";
+    private static final String SQL_DIR_DEFAULT = "../conf/sql";
     
     /**
      * DB設定ファイルの指定オプション.
@@ -29,7 +29,7 @@ public class ArgumentAnalyzer {
     /**
      * DB設定ファイルのデフォルト値.
      */
-    private static final String DB_SETTING_DEFAULT = "./DBpoipoi.ini";
+    private static final String DB_SETTING_DEFAULT = "../conf/DBpoipoi.ini";
     
     /**
      * 出力ファイルの指定オプション.
@@ -39,7 +39,7 @@ public class ArgumentAnalyzer {
      * 出力ファイルの出力フォルダのデフォルト値.
      * ファイル名は現在日時となります.
      */
-    private static final String OUTPUT_DIR_DEFAULT = "./save";
+    private static final String OUTPUT_DIR_DEFAULT = "../save";
     
     /**
      * SQLファイルが入ったフォルダ.

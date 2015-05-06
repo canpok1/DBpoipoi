@@ -13,7 +13,7 @@ def appName = 'DBpoipoi'
 startScripts {
     applicationName = appName
 }
-mainClassName = "main.DBpoipoi"
+mainClassName = "jp.gr.java_conf.ktnet.dbpoipoi.DBpoipoi"
 distZip.baseName = appName
 jar.baseName = appName
 

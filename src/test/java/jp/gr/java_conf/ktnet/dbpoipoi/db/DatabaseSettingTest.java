@@ -2,7 +2,6 @@ package jp.gr.java_conf.ktnet.dbpoipoi.db;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting.SqlSetting;
 
 import org.junit.Before;
@@ -38,7 +37,7 @@ public class DatabaseSettingTest {
     
     public static class 設定値がすべて書いてあってSQLが2つある場合 {
         
-        DatabaseSetting sut;
+        private DatabaseSetting sut;
         
         @Before
         public void setup() throws Exception {

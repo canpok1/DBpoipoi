@@ -1,7 +1,5 @@
 package jp.gr.java_conf.ktnet.dbpoipoi.db;
 
-import static org.junit.Assert.*;
-
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,8 +119,8 @@ public class RecordContainerTest {
                 Types.INTEGER
             });
             List<List<Object>> records = makeRecords(new Object[][]{
-                    {"value1-1", "value1-2", "value1-3"},
-                    {"value2-1", "value2-2", "value2-3", "value2-4"}});
+                {"value1-1", "value1-2", "value1-3"},
+                {"value2-1", "value2-2", "value2-3", "value2-4"}});
             new RecordContainer(columnNames, types, records);
         }
     }

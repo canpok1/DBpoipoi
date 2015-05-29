@@ -26,11 +26,11 @@ public final class ConnectionFactory {
      * @param user ユーザー名
      * @param password パスワード
      * @return DBへの接続
-     * @throws ClassNotFoundException 
-     * @throws SQLException 
+     * @throws ClassNotFoundException ドライバクラスが見つからない場合
+     * @throws SQLException SQL実行エラーが発生した場合
      */
     public static Connection create(String driverClass, String url, String user, String password)
-            throws ClassNotFoundException, SQLException {
+        throws ClassNotFoundException, SQLException {
         ArgumentCheckUtil.checkNotNullAndEmpty(url);
         ArgumentCheckUtil.checkNotNullAndEmpty(driverClass);
         Class.forName(driverClass);

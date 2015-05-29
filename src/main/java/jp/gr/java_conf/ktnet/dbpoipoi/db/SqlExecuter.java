@@ -88,7 +88,7 @@ public class SqlExecuter {
      * @throws SQLException 取得に失敗した場合.
      */
     private Object getValue(ResultSet resultSet, int column, int type)
-            throws SQLException {
+        throws SQLException {
         if(type == Types.INTEGER) {
             return (Object)(resultSet.getInt(column));
         }

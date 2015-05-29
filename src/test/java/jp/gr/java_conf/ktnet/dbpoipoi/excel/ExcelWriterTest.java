@@ -6,7 +6,6 @@ import static org.hamcrest.CoreMatchers.*;
 import java.io.File;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.db.RecordContainer;
-import jp.gr.java_conf.ktnet.dbpoipoi.excel.ExcelWriter;
 import mockit.Mocked;
 
 import org.junit.After;
@@ -55,16 +54,14 @@ public class ExcelWriterTest {
         }
         
         @Test(expected = IllegalArgumentException.class)
-        public void addRecordsの第一引数がnullだと例外発生(
-                @Mocked RecordContainer records
-                ) throws Exception {
+        public void addRecordsの第一引数がnullだと例外発生(@Mocked RecordContainer records)
+            throws Exception {
             sut.addRecords(null, "abc", records);
         }
 
         @Test(expected = IllegalArgumentException.class)
-        public void addRecordsの第二引数がnullだと例外発生(
-                @Mocked RecordContainer records
-                ) throws Exception {
+        public void addRecordsの第二引数がnullだと例外発生(@Mocked RecordContainer records)
+            throws Exception {
             sut.addRecords("abc", null, records);
         }
 

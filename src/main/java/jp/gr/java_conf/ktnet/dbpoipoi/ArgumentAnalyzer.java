@@ -86,6 +86,11 @@ public class ArgumentAnalyzer {
         return defValue;
     }
     
+    /**
+     * 出力先ファイルパスを組み立てます.
+     * @param outputDir 出力先ディレクトリパス
+     * @return 出力先ファイルパス
+     */
     private static String makeOutputFile(String outputDir) {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMDDHHmmss");
         String fileName = format.format(new Date()) + ".xls";

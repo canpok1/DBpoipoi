@@ -1,8 +1,5 @@
 package jp.gr.java_conf.ktnet.dbpoipoi.util;
 
-import static org.junit.Assert.*;
-import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
-
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;

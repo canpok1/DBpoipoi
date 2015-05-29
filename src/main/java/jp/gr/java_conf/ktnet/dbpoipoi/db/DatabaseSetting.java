@@ -138,10 +138,10 @@ public final class DatabaseSetting {
      * @param filePath 設定ファイルのパス(null不可).
      * @param sqlDir SQL格納フォルダのパス(null不可).
      * @return 読み込んだ情報.
-     * @throws IOException 
+     * @throws IOException 読み込みに失敗した場合
      */
     public static DatabaseSetting load(String filePath, String sqlDir)
-            throws IOException {
+        throws IOException {
         ArgumentCheckUtil.checkNotNullAndEmpty(filePath);
         ArgumentCheckUtil.checkNotNullAndEmpty(sqlDir);
         
@@ -164,11 +164,10 @@ public final class DatabaseSetting {
      * SQLフォルダ内の全ファイルを読み込みます.
      * @param sqlDir SQLフォルダ.
      * @return 読み込んだ情報.
-     * @throws FileNotFoundException ファイルが見つからない場合.
      * @throws IOException 読み込みに失敗した場合.
      */
     private static List<SqlSetting> loadSqlDir(File sqlDir)
-            throws IOException {
+        throws IOException {
         assert (sqlDir != null);
         assert (sqlDir.isDirectory());
         
@@ -189,11 +188,10 @@ public final class DatabaseSetting {
      * SQLファイルを読み込みます.
      * @param sqlFile SQLファイル
      * @return 読み込んだSQL.
-     * @throws FileNotFoundException ファイルが見つからない場合.
      * @throws IOException 読み込みに失敗した場合.
      */
     private static String loadSqlFile(File sqlFile)
-            throws IOException {
+        throws IOException {
         assert (sqlFile != null);
         assert (sqlFile.isFile());
         

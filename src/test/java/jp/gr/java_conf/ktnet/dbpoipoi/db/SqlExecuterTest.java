@@ -34,9 +34,9 @@ public class SqlExecuterTest {
     
     public static class selectの呼び出しで {
         
-        private static final String className = "org.sqlite.JDBC";
-        private static final String url = "jdbc:sqlite:./src/test/resources/TestSchema.sqlite";
-        private static final String testData = "./src/test/resources/TestData.xls";
+        private static final String CLASS_NAME = "org.sqlite.JDBC";
+        private static final String URL = "jdbc:sqlite:./src/test/resources/TestSchema.sqlite";
+        private static final String TEST_DATA = "./src/test/resources/TestData.xls";
         
         private IDatabaseTester databaseTester;
         private Connection connection;
@@ -45,13 +45,13 @@ public class SqlExecuterTest {
         
         @Before
         public void setup() throws Exception {
-            databaseTester = new JdbcDatabaseTester(className, url, "", "");
-            databaseTester.setDataSet(new XlsDataSet(new File(testData)));
+            databaseTester = new JdbcDatabaseTester(CLASS_NAME, URL, "", "");
+            databaseTester.setDataSet(new XlsDataSet(new File(TEST_DATA)));
             databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
             databaseTester.onSetup();
             
-            Class.forName(className);
-            connection = DriverManager.getConnection(url, "", "");
+            Class.forName(CLASS_NAME);
+            connection = DriverManager.getConnection(URL, "", "");
             this.sut = new SqlExecuter(connection);
         }
         
@@ -82,8 +82,8 @@ public class SqlExecuterTest {
             RecordContainer records = sut.select("select * from User");
             assertThat(
                 records.getColumnNames(),
-                is(contains("id", "name", "age", "birthday")
-            ));
+                is(contains("id", "name", "age", "birthday"))
+            );
         }
         
         @Test
@@ -102,44 +102,56 @@ public class SqlExecuterTest {
         
         @Test
         public void UserテーブルのIDカラムの値を取得できる() throws Exception {
+            final int columnIndex = 0;
+            final int columnValue = 1;
+            
             RecordContainer records = sut.select("select * from User");
             assertThat(records.getRecords(), hasSize(1));
-            assertThat(records.getRecords(0).get(0), is(instanceOf(Integer.class)));
+            assertThat(records.getRecords(0).get(columnIndex), is(instanceOf(Integer.class)));
             
-            Integer intValue = (Integer)(records.getRecords(0).get(0));
-            assertThat(intValue, is(1));
+            Integer intValue = (Integer)(records.getRecords(0).get(columnIndex));
+            assertThat(intValue, is(columnValue));
         }
         
         @Test
         public void UserテーブルのNAMEカラムの値を取得できる() throws Exception {
+            final int columnIndex = 1;
+            final String columnValue = "tanabe";
+            
             RecordContainer records = sut.select("select * from User");
             assertThat(records.getRecords(), hasSize(1));
-            assertThat(records.getRecords(0).get(1), is(instanceOf(String.class)));
+            assertThat(records.getRecords(0).get(columnIndex), is(instanceOf(String.class)));
             
-            String strValue = (String)(records.getRecords(0).get(1));
-            assertThat(strValue, is("tanabe"));
+            String strValue = (String)(records.getRecords(0).get(columnIndex));
+            assertThat(strValue, is(columnValue));
         }
         
         @Test
         public void UserテーブルのAGEカラムの値を取得できる() throws Exception {
+            final int columnIndex = 2;
+            final int columnValue = 28;
+            
             RecordContainer records = sut.select("select * from User");
             assertThat(records.getRecords(), hasSize(1));
-            assertThat(records.getRecords(0).get(2), is(instanceOf(Integer.class)));
+            assertThat(records.getRecords(0).get(columnIndex), is(instanceOf(Integer.class)));
             
-            Integer intValue = (Integer)(records.getRecords(0).get(2));
-            assertThat(intValue, is(28));
+            Integer intValue = (Integer)(records.getRecords(0).get(columnIndex));
+            assertThat(intValue, is(columnValue));
         }
         
         @Test
         public void UserテーブルのBIRTHDAYカラムの値を取得できる() throws Exception {
+            final int columnIndex = 3;
+            final String columnValue = "1987/04/14";
+            
             RecordContainer records = sut.select("select * from User");
             assertThat(records.getRecords(), hasSize(1));
-            assertThat(records.getRecords(0).get(3), is(instanceOf(Date.class)));
+            assertThat(records.getRecords(0).get(columnIndex), is(instanceOf(Date.class)));
             
-            Date dateValue = (Date)(records.getRecords(0).get(3));
+            Date dateValue = (Date)(records.getRecords(0).get(columnIndex));
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             
-            assertThat(format.format(dateValue), is("1987/04/14"));
+            assertThat(format.format(dateValue), is(columnValue));
         }
         
     }

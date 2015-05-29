@@ -59,8 +59,17 @@ test {
     html.enabled = false
 }
 
-// Checkstyle警告が出ても続行
-[checkstyleMain, checkstyleTest]*.ignoreFailures = true
+// Checkstyleの設定
+// プロダクションコード用
+checkstyleMain {
+    configFile = file('config/checkstyle/checkstyle.xml')
+    ignoreFailures = true
+}
+// テストコード用
+checkstyleTest {
+    configFile = file('config/checkstyle/checkstyle-test.xml')
+    ignoreFailures = true
+}
 
 // 生成するEclipseプロジェクトにフォーマッターの設定追加
 eclipse.jdt.file {

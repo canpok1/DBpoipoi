@@ -18,6 +18,7 @@ public class RecordContainer {
     
     /**
      * カラムの型.
+     * java.sql.Typesに定義されている値を想定.
      */
     private List<Integer> columnTypes;
     

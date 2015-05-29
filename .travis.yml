@@ -3,4 +3,5 @@ language: java
 jdk:
   - openjdk7
 
-script: "./gradlew"
+after_success:
+  - ./gradlew jacocoTestReport coveralls

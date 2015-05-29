@@ -3,10 +3,35 @@ apply plugin: 'eclipse'
 apply plugin: 'findbugs'
 apply plugin: 'application'
 apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
+    }
+}
 
 repositories {
     mavenCentral()
 }
+dependencies {
+    compile group: 'org.apache.poi', name: 'poi', version: '3.11'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.11'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.8.7'
+    testCompile 'org.jmockit:jmockit:1.12'
+    testCompile 'junit:junit:4.11', {
+        transitive = false
+    }
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'org.dbunit:dbunit:2.5.1'
+    testCompile 'org.slf4j:slf4j-api:1.7.12'
+    testCompile 'org.slf4j:slf4j-nop:1.7.12'
+}
+
 
 // アプリケーション設定
 def appName = 'DBpoipoi'
@@ -21,20 +46,6 @@ jar.baseName = appName
 def defaultEncoding = 'UTF-8'
 [compileJava, compileTestJava, javadoc]*.options*.encoding = defaultEncoding
 
-dependencies {
-    compile group: 'org.apache.poi', name: 'poi', version: '3.11'
-    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.11'
-    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.8.7'
-    testCompile 'org.jmockit:jmockit:1.12'
-    testCompile 'org.jmockit:jmockit-coverage:1.12'
-    testCompile 'junit:junit:4.11', {
-        transitive = false
-    }
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile 'org.dbunit:dbunit:2.5.1'
-    testCompile 'org.slf4j:slf4j-api:1.7.12'
-    testCompile 'org.slf4j:slf4j-nop:1.7.12'
-}
 
 // Gradleラッパーのインストールタスク
 task wrapper(type: Wrapper) {
@@ -44,10 +55,6 @@ task wrapper(type: Wrapper) {
 test {
     // テストが二重実行される問題の対策
     exclude '**/*$*'
-    // カバレッジ設定
-    jvmArgs "-Djmockit-coverage-outputDir=" + reporting.baseDir + "/coverage",  // レポートの出力先
-            "-Djmockit-coverage-output=html-nocp,serial",   // 出力タイプ
-            "-Djmockit-coverage-srcDirs=" + sourceSets.main.java.srcDirs.join(',') // ソースの場所
 }
 
 // Findbugsの設定
@@ -71,6 +78,13 @@ checkstyleTest {
     ignoreFailures = true
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
 // 生成するEclipseプロジェクトにフォーマッターの設定追加
 eclipse.jdt.file {
     withProperties { properties ->
@@ -88,4 +102,4 @@ eclipseJdt << {
     f.append('encoding/<project>=' + defaultEncoding)
 }
 
-defaultTasks 'clean', 'javadoc', 'build', 'distZip'
+defaultTasks 'clean', 'javadoc', 'build', 'jacocoTestReport', 'distZip'

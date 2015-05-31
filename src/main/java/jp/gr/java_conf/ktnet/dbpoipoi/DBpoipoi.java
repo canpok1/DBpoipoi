@@ -1,7 +1,9 @@
 package jp.gr.java_conf.ktnet.dbpoipoi;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.db.ConnectionFactory;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting;
@@ -9,6 +11,7 @@ import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting.SqlSetting;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.RecordContainer;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.SqlExecuter;
 import jp.gr.java_conf.ktnet.dbpoipoi.excel.ExcelWriter;
+import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 
 /**
  * DBのレコードをエクセルに吐き出すツールです.
@@ -30,23 +33,16 @@ public final class DBpoipoi {
                 analyzer.getSqlFolder()
             );
             
-            ExcelWriter writer = new ExcelWriter(analyzer.getOutputFile());
             try (Connection connection
                     = ConnectionFactory.create(dbSetting.getJdbcDriverClass(),
                                                dbSetting.getUrl(),
                                                dbSetting.getUser(),
                                                dbSetting.getPassword())) {
-                
-                SqlExecuter sqlExecuter = new SqlExecuter(connection);
-                
-                for(SqlSetting sqlSetting : dbSetting.getSqlSettings()) {
-                    
-                    fetchRecordAndSave(sqlSetting, sqlExecuter, writer);
-                    
-                }
-                
+                new DBpoipoi().save(
+                        dbSetting.getSqlSettings(),
+                        connection,
+                        analyzer.getOutputFile());
             }
-            writer.write();
             System.out.println("保存完了[" + analyzer.getOutputFile() + "]");
         } catch(Exception e) {
             e.printStackTrace();
@@ -84,7 +80,38 @@ public final class DBpoipoi {
     }
     
     /**
-     * コンストラクタ(使用不可).
+     * コンストラクタ.
      */
-    private DBpoipoi() { }
+    public DBpoipoi() { }
+    
+    /**
+     * DBから情報を取得してファイルに保存します.
+     * @param sqlSettings 情報取得用のSQL
+     * @param connection DB接続
+     * @param outputFile 出力先ファイル
+     * @throws IOException 入出力エラーが発生した場合
+     * @throws SQLException SQL実行時エラーが発生した場合
+     */
+    public void save(
+        List<SqlSetting> sqlSettings,
+        Connection connection,
+        String outputFile)
+        throws IOException, SQLException {
+        
+        ArgumentCheckUtil.checkNotNull(sqlSettings);
+        ArgumentCheckUtil.checkNotNull(connection);
+        ArgumentCheckUtil.checkNotNullAndEmpty(outputFile);
+        
+        ExcelWriter writer = new ExcelWriter(outputFile);
+        SqlExecuter sqlExecuter = new SqlExecuter(connection);
+        
+        for(SqlSetting sqlSetting : sqlSettings) {
+            
+            fetchRecordAndSave(sqlSetting, sqlExecuter, writer);
+            
+        }
+        writer.write();
+        
+    }
+    
 }

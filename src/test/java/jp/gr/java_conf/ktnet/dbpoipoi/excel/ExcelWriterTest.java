@@ -33,7 +33,7 @@ public class ExcelWriterTest {
     
     public static class 書き込みファイルが存在しない時 {
         
-        private final String filePath = "./ExcelWriterTest_notExist.xls";
+        private final String filePath = "./test/ExcelWriterTest_notExist.xls";
         private File file;
         private ExcelWriter sut;
         
@@ -43,6 +43,9 @@ public class ExcelWriterTest {
             if(file.exists()) {
                 file.delete();
             }
+            File parent = file.getParentFile();
+            parent.delete();
+            
             this.sut = new ExcelWriter(filePath);
         }
         
@@ -50,6 +53,10 @@ public class ExcelWriterTest {
         public void tearDown() {
             if(file.exists()) {
                 file.delete();
+            }
+            File parent = file.getParentFile();
+            if(parent.exists()) {
+                parent.delete();
             }
         }
         

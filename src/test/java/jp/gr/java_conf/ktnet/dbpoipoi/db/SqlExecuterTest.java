@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.*;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -154,6 +155,10 @@ public class SqlExecuterTest {
             assertThat(format.format(dateValue), is(columnValue));
         }
         
+        @Test(expected = SQLException.class)
+        public void 存在しないテーブルだと例外発生() throws Exception {
+            sut.select("select * from NotExist");
+        }
     }
     
 }

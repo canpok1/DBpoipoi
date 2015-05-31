@@ -2,6 +2,9 @@ package jp.gr.java_conf.ktnet.dbpoipoi.db;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+
+import java.io.IOException;
+
 import jp.gr.java_conf.ktnet.dbpoipoi.db.DatabaseSetting.SqlSetting;
 
 import org.junit.Before;
@@ -32,6 +35,20 @@ public class DatabaseSettingTest {
         @Test(expected = IllegalArgumentException.class)
         public void 第二引数が空文字だと例外発生() throws Exception {
             DatabaseSetting.load("aaa", "");
+        }
+        
+        @Test(expected = IOException.class)
+        public void 設定ファイルが見つからない場合は例外発生() throws Exception {
+            DatabaseSetting.load(
+                "./src/test/resources/notExist.ini",
+                "./src/test/resources/sql");
+        }
+        
+        @Test(expected = IOException.class)
+        public void SQLフォルダが見つからない場合は例外発生() throws Exception {
+            DatabaseSetting.load(
+                "./src/test/resources/databaseSettingTest.ini",
+                "./src/test/resources/notExist");
         }
     }
     

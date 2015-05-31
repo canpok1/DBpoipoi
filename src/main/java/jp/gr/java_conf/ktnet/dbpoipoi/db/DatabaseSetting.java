@@ -155,7 +155,12 @@ public final class DatabaseSetting {
         setting.url = prop.getProperty("url");
         setting.user = prop.getProperty("user");
         setting.password = prop.getProperty("password");
-        setting.sqlSettings = loadSqlDir(new File(sqlDir));
+        
+        File sqlDirFile = new File(sqlDir);
+        if(!sqlDirFile.exists()) {
+            throw new IOException("SQL格納フォルダが見つかりません[" + sqlDir + "]");
+        }
+        setting.sqlSettings = loadSqlDir(sqlDirFile);
         
         return setting;
     }

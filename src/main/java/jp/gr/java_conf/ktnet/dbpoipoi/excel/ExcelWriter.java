@@ -122,7 +122,9 @@ public class ExcelWriter {
         int column = 0;
         for(Object value : record) {
             Cell cell = row.createCell(column);
-            cell.setCellValue(value.toString());
+            if(value != null) {
+                cell.setCellValue(value.toString());
+            }
             if(style != null) {
                 cell.setCellStyle(style);
             }

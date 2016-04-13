@@ -8,7 +8,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 import lombok.NonNull;
 
 /**

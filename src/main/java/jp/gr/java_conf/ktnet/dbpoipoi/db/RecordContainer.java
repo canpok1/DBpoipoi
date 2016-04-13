@@ -2,7 +2,6 @@ package jp.gr.java_conf.ktnet.dbpoipoi.db;
 
 import java.util.List;
 
-import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 import lombok.Getter;
 import lombok.NonNull;
 

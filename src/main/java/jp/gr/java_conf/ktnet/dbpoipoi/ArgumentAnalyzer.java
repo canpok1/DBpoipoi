@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+import lombok.Getter;
 
 /**
  * 実行時引数を解析するクラスです.
@@ -44,16 +45,19 @@ public class ArgumentAnalyzer {
     /**
      * SQLファイルが入ったフォルダ.
      */
+    @Getter
     private String sqlFolder;
     
     /**
      * 出力先ファイル.
      */
+    @Getter
     private String outputFile;
     
     /**
      * DB設定ファイル.
      */
+    @Getter
     private String dbSetting;
     
     /**
@@ -96,28 +100,5 @@ public class ArgumentAnalyzer {
         String fileName = format.format(new Date()) + ".xls";
         return new File(outputDir, fileName).getPath();
     }
-    
-    /**
-     * SQLフォルダを取得します.
-     * @return sqlFolder
-     */
-    public String getSqlFolder() {
-        return sqlFolder;
-    }
 
-    /**
-     * 出力ファイルのパスを取得します.
-     * @return outputFile
-     */
-    public String getOutputFile() {
-        return outputFile;
-    }
-    
-    /**
-     * DB設定ファイルのパスを取得します.
-     * @return dbSetting
-     */
-    public String getDbSetting() {
-        return dbSetting;
-    }
 }

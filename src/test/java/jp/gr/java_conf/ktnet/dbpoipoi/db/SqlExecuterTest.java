@@ -91,7 +91,7 @@ public class SqlExecuterTest {
         public void Userテーブルの型情報を取得できる() throws Exception {
             RecordContainer records = sut.select("select * from User");
             assertThat(
-                records.getColumnType(),
+                records.getColumnTypes(),
                 is(contains(
                     Types.INTEGER,
                     Types.VARCHAR,

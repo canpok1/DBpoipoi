@@ -3,6 +3,7 @@ package jp.gr.java_conf.ktnet.dbpoipoi.db;
 import java.util.List;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+import lombok.Getter;
 
 /**
  * DBのレコードを格納するクラスです.
@@ -14,43 +15,22 @@ public class RecordContainer {
     /**
      * カラム名.
      */
+    @Getter
     private List<String> columnNames;
     
     /**
      * カラムの型.
      * java.sql.Typesに定義されている値を想定.
      */
+    @Getter
     private List<Integer> columnTypes;
     
     /**
      * レコード.
      */
+    @Getter
     private List<List<Object>> records;
 
-    /**
-     * カラム名を取得します.
-     * @return columnNames
-     */
-    public List<String> getColumnNames() {
-        return columnNames;
-    }
-
-    /**
-     * カラムの型名を取得します.
-     * @return columnTypes
-     */
-    public List<Integer> getColumnType() {
-        return columnTypes;
-    }
-
-    /**
-     * レコードを取得します.
-     * @return records
-     */
-    public List<List<Object>> getRecords() {
-        return records;
-    }
-    
     /**
      * レコードを取得します.
      * @param index レコードのインデックス.

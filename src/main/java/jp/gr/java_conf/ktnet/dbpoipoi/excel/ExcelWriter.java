@@ -18,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.db.RecordContainer;
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+import lombok.NonNull;
 
 /**
  * エクセルへの書き込みを行うクラスです.
@@ -40,8 +41,8 @@ public class ExcelWriter {
      * コンストラクタ.
      * @param filePath エクセルのパス(Null不可).
      */
-    public ExcelWriter(String filePath) {
-        ArgumentCheckUtil.checkNotNullAndEmpty(filePath);
+    public ExcelWriter(@NonNull String filePath) {
+        ArgumentCheckUtil.checkNotEmpty(filePath);
         workbook = new XSSFWorkbook();
         this.filePath = filePath;
     }
@@ -51,10 +52,10 @@ public class ExcelWriter {
      * @param memo メモ(Null不可).
      * @param records レコード(Null不可).
      */
-    public void addRecords(String name, String memo, RecordContainer records) {
-        ArgumentCheckUtil.checkNotNull(name);
-        ArgumentCheckUtil.checkNotNull(memo);
-        ArgumentCheckUtil.checkNotNull(records);
+    public void addRecords(
+            @NonNull String name,
+            @NonNull String memo,
+            @NonNull RecordContainer records) {
         
         Sheet sheet;
         if(name == "") {

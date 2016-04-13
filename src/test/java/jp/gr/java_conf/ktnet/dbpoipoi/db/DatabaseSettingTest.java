@@ -17,7 +17,7 @@ public class DatabaseSettingTest {
     
     public static class loadする際に {
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第一引数がNullだと例外発生() throws Exception {
             DatabaseSetting.load(null, "aaa");
         }
@@ -27,7 +27,7 @@ public class DatabaseSettingTest {
             DatabaseSetting.load("", "aaa");
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第二引数がNullだと例外発生() throws Exception {
             DatabaseSetting.load("aaa", null);
         }

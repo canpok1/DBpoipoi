@@ -4,6 +4,7 @@ import java.util.List;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * DBのレコードを格納するクラスです.
@@ -47,12 +48,9 @@ public class RecordContainer {
      * @param records レコード.
      */
     public RecordContainer(
-            List<String> columnNames,
-            List<Integer> columnTypes,
-            List<List<Object>> records) {
-        ArgumentCheckUtil.checkNotNull(columnNames);
-        ArgumentCheckUtil.checkNotNull(columnTypes);
-        ArgumentCheckUtil.checkNotNull(records);
+            @NonNull List<String> columnNames,
+            @NonNull List<Integer> columnTypes,
+            @NonNull List<List<Object>> records) {
         
         if(columnNames.size() != columnTypes.size()) {
             throw new IllegalArgumentException(

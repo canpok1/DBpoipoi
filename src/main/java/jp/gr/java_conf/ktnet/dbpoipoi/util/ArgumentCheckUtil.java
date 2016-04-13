@@ -13,16 +13,6 @@ public final class ArgumentCheckUtil {
     private ArgumentCheckUtil() { }
 
     /**
-     * nullではないことをチェックします.
-     * @param arg 引数
-     */
-    public static void checkNotNull(Object arg) {
-        if(arg == null) {
-            throw new IllegalArgumentException("Null不可");
-        }
-    }
-    
-    /**
      * 空文字ではないことをチェックします.
      * @param arg 引数
      */
@@ -30,14 +20,5 @@ public final class ArgumentCheckUtil {
         if("".equals(arg)) {
             throw new IllegalArgumentException("空文字不可");
         }
-    }
-    
-    /**
-     * Nullと空文字ではないことをチェックします.
-     * @param arg 引数
-     */
-    public static void checkNotNullAndEmpty(String arg) {
-        checkNotNull(arg);
-        checkNotEmpty(arg);
     }
 }

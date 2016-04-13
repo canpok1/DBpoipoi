@@ -12,6 +12,7 @@ import java.util.Properties;
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Value;
 
 /**
@@ -77,10 +78,12 @@ public final class DatabaseSetting {
      * @return 読み込んだ情報.
      * @throws IOException 読み込みに失敗した場合
      */
-    public static DatabaseSetting load(String filePath, String sqlDir)
+    public static DatabaseSetting load(
+            @NonNull String filePath,
+            @NonNull String sqlDir)
         throws IOException {
-        ArgumentCheckUtil.checkNotNullAndEmpty(filePath);
-        ArgumentCheckUtil.checkNotNullAndEmpty(sqlDir);
+        ArgumentCheckUtil.checkNotEmpty(filePath);
+        ArgumentCheckUtil.checkNotEmpty(sqlDir);
         
         DatabaseSetting setting = new DatabaseSetting();
         

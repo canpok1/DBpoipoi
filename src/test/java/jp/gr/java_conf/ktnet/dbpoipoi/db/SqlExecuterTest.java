@@ -26,7 +26,7 @@ public class SqlExecuterTest {
 
     public static class コンストラクタの呼び出しで {
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第一引数がNullだと例外発生() {
             new SqlExecuter(null);
         }
@@ -63,7 +63,7 @@ public class SqlExecuterTest {
             databaseTester.onTearDown();
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第一引数がNullの場合は例外発生() throws Exception {
             sut.select(null);
         }

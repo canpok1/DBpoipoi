@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+import lombok.NonNull;
 
 /**
  * SQLを実行するクラスです.
@@ -26,8 +27,7 @@ public class SqlExecuter {
      * コンストラクタ.
      * @param connection DBへの接続.
      */
-    public SqlExecuter(Connection connection) {
-        ArgumentCheckUtil.checkNotNull(connection);
+    public SqlExecuter(@NonNull Connection connection) {
         this.connection = connection;
     }
 
@@ -37,10 +37,8 @@ public class SqlExecuter {
      * @return 実行結果.
      * @throws SQLException 実行に失敗した場合
      */
-    public RecordContainer select(String sql) throws SQLException {
+    public RecordContainer select(@NonNull String sql) throws SQLException {
 
-        ArgumentCheckUtil.checkNotNull(sql);
-        
         if(!sql.toUpperCase().matches("SELECT .*")) {
             throw new IllegalArgumentException("SELECT文以外は指定不可[" + sql + "]");
         }

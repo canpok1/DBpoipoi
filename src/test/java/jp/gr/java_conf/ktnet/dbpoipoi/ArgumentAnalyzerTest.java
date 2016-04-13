@@ -13,7 +13,7 @@ public class ArgumentAnalyzerTest {
 
     public static class コンストラクタを呼び出す際 {
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第一引数がnullだと例外発生() {
             new ArgumentAnalyzer(null);
         }

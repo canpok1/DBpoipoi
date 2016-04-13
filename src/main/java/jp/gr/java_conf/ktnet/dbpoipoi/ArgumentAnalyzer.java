@@ -4,8 +4,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * 実行時引数を解析するクラスです.
@@ -64,14 +64,40 @@ public class ArgumentAnalyzer {
      * コンストラクタ.
      * @param args 実行時引数.
      */
-    public ArgumentAnalyzer(String[] args) {
-        
-        ArgumentCheckUtil.checkNotNull(args);
-        
-        outputFile = fetchValue(args, OUTPUT_FILE_OPTION, makeOutputFile(OUTPUT_DIR_DEFAULT));
-        sqlFolder = fetchValue(args, SQL_DIR_OPTION, SQL_DIR_DEFAULT);
-        dbSetting = fetchValue(args, DB_SETTING_OPTION, DB_SETTING_DEFAULT);
-        
+    public ArgumentAnalyzer(@NonNull String[] args) {
+        outputFile = fetchValue(args, OUTPUT_FILE_OPTION, null);
+        sqlFolder = fetchValue(args, SQL_DIR_OPTION, null);
+        dbSetting = fetchValue(args, DB_SETTING_OPTION, null);
+    }
+    
+    /**
+     * 必須値が全て指定されているかを判定します.
+     * @return 必須値が全て設定されていればtrue, 足りないものがあればfalse.
+     */
+    public boolean validate() {
+        if (outputFile == null) {
+            return false;
+        }
+        if (sqlFolder == null) {
+            return false;
+        }
+        if (dbSetting == null) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * 使い方の説明を取得します.
+     * @return 説明.
+     */
+    public String getManual() {
+        return "使い方" + System.lineSeparator()
+                + "SQLの実行結果をファイルに出力します。" + System.lineSeparator()
+                + "オプション" + System.lineSeparator()
+                + SQL_DIR_OPTION + " : SQLフォルダ" + System.lineSeparator()
+                + DB_SETTING_OPTION + " : DB設定ファイルパス" + System.lineSeparator()
+                + OUTPUT_FILE_OPTION + " : 出力先ファイルパス";
     }
 
     /**

@@ -34,19 +34,19 @@ public class DBpoipoiTest {
             this.sut = new DBpoipoi();
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第一引数がnullだと例外発生(
             @Mocked Connection connection) throws Exception {
             sut.save(null, connection, "abcde");
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第二引数がnullだと例外発生(
             @Mocked List<SqlSetting> list) throws Exception {
             sut.save(list, null, "abcde");
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第三引数がnullだと例外発生(
             @Mocked List<SqlSetting> list,
             @Mocked Connection connection) throws Exception {

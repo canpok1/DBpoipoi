@@ -12,6 +12,7 @@ import jp.gr.java_conf.ktnet.dbpoipoi.db.RecordContainer;
 import jp.gr.java_conf.ktnet.dbpoipoi.db.SqlExecuter;
 import jp.gr.java_conf.ktnet.dbpoipoi.excel.ExcelWriter;
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+import lombok.NonNull;
 
 /**
  * DBのレコードをエクセルに吐き出すツールです.
@@ -28,6 +29,11 @@ public final class DBpoipoi {
         try {
             // 設定読み込み
             ArgumentAnalyzer analyzer = new ArgumentAnalyzer(args);
+            if(!analyzer.validate()) {
+                System.out.println(analyzer.getManual());
+                return;
+            }
+            
             DatabaseSetting dbSetting = DatabaseSetting.load(
                 analyzer.getDbSetting(),
                 analyzer.getSqlFolder()
@@ -93,14 +99,12 @@ public final class DBpoipoi {
      * @throws SQLException SQL実行時エラーが発生した場合
      */
     public void save(
-        List<SqlSetting> sqlSettings,
-        Connection connection,
-        String outputFile)
+        @NonNull List<SqlSetting> sqlSettings,
+        @NonNull Connection connection,
+        @NonNull String outputFile)
         throws IOException, SQLException {
         
-        ArgumentCheckUtil.checkNotNull(sqlSettings);
-        ArgumentCheckUtil.checkNotNull(connection);
-        ArgumentCheckUtil.checkNotNullAndEmpty(outputFile);
+        ArgumentCheckUtil.checkNotEmpty(outputFile);
         
         ExcelWriter writer = new ExcelWriter(outputFile);
         SqlExecuter sqlExecuter = new SqlExecuter(connection);

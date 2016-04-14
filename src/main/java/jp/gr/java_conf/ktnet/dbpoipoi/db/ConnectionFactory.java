@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+import lombok.NonNull;
 
 /**
  * DBへの接続を生成するクラスです.
@@ -29,10 +30,12 @@ public final class ConnectionFactory {
      * @throws ClassNotFoundException ドライバクラスが見つからない場合
      * @throws SQLException SQL実行エラーが発生した場合
      */
-    public static Connection create(String driverClass, String url, String user, String password)
+    public static Connection create(
+            @NonNull String driverClass,
+            @NonNull String url, String user, String password)
         throws ClassNotFoundException, SQLException {
-        ArgumentCheckUtil.checkNotNullAndEmpty(url);
-        ArgumentCheckUtil.checkNotNullAndEmpty(driverClass);
+        ArgumentCheckUtil.checkNotEmpty(url);
+        ArgumentCheckUtil.checkNotEmpty(driverClass);
         Class.forName(driverClass);
         return DriverManager.getConnection(url, user, password);
     }

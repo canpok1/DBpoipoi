@@ -31,7 +31,7 @@ public class RecordContainerTest {
             return result;
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void カラム名がnullだと例外発生() {
             List<Integer> types = makeRecord(new Integer[] {
                 Types.INTEGER,
@@ -48,7 +48,7 @@ public class RecordContainerTest {
             new RecordContainer(null, types, records);
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void カラム型がnullだと例外発生() {
             List<String> columnNames = makeRecord(new String[] {
                 "aaa", "bbb", "ccc"
@@ -62,7 +62,7 @@ public class RecordContainerTest {
             new RecordContainer(columnNames, null, records);
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void レコードがnullだと例外発生() {
             List<Integer> types = makeRecord(new Integer[] {
                 Types.INTEGER,

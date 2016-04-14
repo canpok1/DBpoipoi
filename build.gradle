@@ -22,6 +22,8 @@ dependencies {
     compile group: 'org.apache.poi', name: 'poi', version: '3.11'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.11'
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.8.7'
+    compile 'org.postgresql:postgresql:9.4.1208'
+    compile 'org.projectlombok:lombok:1.16.8'
     compile fileTree(dir: 'src/main/libs', include: '*.jar')
     testCompile 'org.jmockit:jmockit:1.12'
     testCompile 'junit:junit:4.11', {

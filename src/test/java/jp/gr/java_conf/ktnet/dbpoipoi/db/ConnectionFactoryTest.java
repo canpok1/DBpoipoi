@@ -33,7 +33,7 @@ public class ConnectionFactoryTest {
             }
         }
         
-        @Test(expected = IllegalArgumentException.class)
+        @Test(expected = NullPointerException.class)
         public void 第二引数がnullだと例外発生() throws Exception {
             try (Connection con = ConnectionFactory.create(DRIVER, null, "", "")) {
                 fail("例外未発生");

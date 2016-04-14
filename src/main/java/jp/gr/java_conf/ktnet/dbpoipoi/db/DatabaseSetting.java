@@ -10,12 +10,17 @@ import java.util.List;
 import java.util.Properties;
 
 import jp.gr.java_conf.ktnet.dbpoipoi.util.ArgumentCheckUtil;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Value;
 
 /**
  * DB関連の情報を保持するクラスです.
  * @author tanabe
  *
  */
+@NoArgsConstructor
 public final class DatabaseSetting {
 
     /**
@@ -23,6 +28,7 @@ public final class DatabaseSetting {
      * @author tanabe
      *
      */
+    @Value
     public static class SqlSetting {
         /**
          * 識別用の名前.
@@ -33,106 +39,38 @@ public final class DatabaseSetting {
          * SQL.
          */
         private String sql;
-        
-        /**
-         * コンストラクタ.
-         * @param name 識別名.
-         * @param sql SQL.
-         */
-        public SqlSetting(String name, String sql) {
-            this.name = name;
-            this.sql = sql;
-        }
-
-        /**
-         * nameを取得します.
-         * @return name
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * sqlを取得します.
-         * @return sql
-         */
-        public String getSql() {
-            return sql;
-        }
-        
-    }
-    
-    /**
-     * コンストラクタ.
-     */
-    private DatabaseSetting() {
     }
     
     /**
      * JDBCのドライバクラス名.
      */
+    @Getter
     private String jdbcDriverClass;
     
     /**
      * 接続URL.
      */
+    @Getter
     private String url;
     
     /**
      * 接続ユーザー名.
      */
+    @Getter
     private String user;
     
     /**
      * 接続パスワード.
      */
+    @Getter
     private String password;
     
     /**
      * レコード取得用のSQL情報.
      */
+    @Getter
     private List<SqlSetting> sqlSettings;
     
-    /**
-     * JDBCのドライバクラス名を取得します.
-     * @return jdbcDriverClass
-     */
-    public String getJdbcDriverClass() {
-        return jdbcDriverClass;
-    }
-
-    /**
-     * URLを取得します.
-     * @return url URL
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * ユーザー名を取得します.
-     * @return user ユーザー名
-     */
-    public String getUser() {
-        return user;
-    }
-
-    /**
-     * パスワードを取得します.
-     * @return password パスワード
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * SQL設定を取得します.
-     * @return SQL設定.
-     */
-    public List<SqlSetting> getSqlSettings() {
-        return sqlSettings;
-    }
-
     /**
      * 設定ファイルから情報を読み込みます.
      * @param filePath 設定ファイルのパス(null不可).
@@ -140,10 +78,12 @@ public final class DatabaseSetting {
      * @return 読み込んだ情報.
      * @throws IOException 読み込みに失敗した場合
      */
-    public static DatabaseSetting load(String filePath, String sqlDir)
+    public static DatabaseSetting load(
+            @NonNull String filePath,
+            @NonNull String sqlDir)
         throws IOException {
-        ArgumentCheckUtil.checkNotNullAndEmpty(filePath);
-        ArgumentCheckUtil.checkNotNullAndEmpty(sqlDir);
+        ArgumentCheckUtil.checkNotEmpty(filePath);
+        ArgumentCheckUtil.checkNotEmpty(sqlDir);
         
         DatabaseSetting setting = new DatabaseSetting();
         
